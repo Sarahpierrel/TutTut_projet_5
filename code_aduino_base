@@ -1,0 +1,90 @@
+//Déclaration des branchement de contrôle moteurs
+int speedPin_M1 = 5;     //M1 Speed Control
+int speedPin_M2 = 6;     //M2 Speed Control
+int directionPin_M1 = 4;     //M1 Direction Control
+int directionPin_M2 = 7;     //M1 Direction Control
+
+//Initialisation de la vitesse de transmission des données (9600 bits/s)
+void setup() {
+  Serial.begin(9600);
+}
+//Fonction d'éxecutage en boucle
+void loop(){
+  if (Serial.available() > 0){
+    int data[2];
+    data = Serial.read();
+    Serial.print("Hello, you sent me: ");
+    Serial.println("Direction\n", data[0]);
+    Serial.println("Speed\n", data[1]);
+    advance(data);
+  }
+}
+
+//Fonction permettant de gérer marche avant/arrière/gauche/droite...
+void advance(int data[]) {
+   int spe = data[1];
+   if (data[0] == 1){
+    carAdvance(spe,spe);
+   }
+   if (data[0] == 2){
+    carBack(spe, spe);
+   /*
+   if(data == 9){
+    carStop();
+    delay(500);
+    carAdvance(spe,spe);
+    delay(1000);
+   }
+  */ 
+    
+   }
+   if (data[0] == 3){
+    carTurnLeft(spe,spe);
+    
+   
+   }
+   if (data[0] == 4){
+    carTurnRight(spe,spe);
+    
+   }
+   if (data[0] == 0 ){
+    carStop();
+    delay(3000);
+    
+   }
+}
+
+
+void carStop(){                 //  Motor Stop
+  digitalWrite(speedPin_M2,0);
+  digitalWrite(directionPin_M1,LOW);
+  digitalWrite(speedPin_M1,0);
+  digitalWrite(directionPin_M2,LOW); 
+}
+
+void carAdvance(int leftSpeed,int rightSpeed){         //Move backward
+  analogWrite (speedPin_M2,leftSpeed);              //PWM Speed Control
+  digitalWrite(directionPin_M1,HIGH);
+  analogWrite (speedPin_M1,rightSpeed);
+  digitalWrite(directionPin_M2,HIGH);
+}
+
+void carBack(int leftSpeed,int rightSpeed){       //Move forward
+  analogWrite (speedPin_M2,leftSpeed);
+  digitalWrite(directionPin_M1,LOW);
+  analogWrite (speedPin_M1,rightSpeed);
+  digitalWrite(directionPin_M2,LOW);
+}
+
+void carTurnRight(int leftSpeed,int rightSpeed){      //Turn Left
+  analogWrite (speedPin_M2,leftSpeed);
+  digitalWrite(directionPin_M1,LOW);
+  analogWrite (speedPin_M1,rightSpeed);
+  digitalWrite(directionPin_M2,HIGH);
+}
+void carTurnLeft(int leftSpeed,int rightSpeed){      //Turn Right
+  analogWrite (speedPin_M2,leftSpeed);
+  digitalWrite(directionPin_M1,HIGH);
+  analogWrite (speedPin_M1,rightSpeed);
+  digitalWrite(directionPin_M2,LOW);
+}
