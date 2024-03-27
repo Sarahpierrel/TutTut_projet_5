@@ -10,7 +10,7 @@ def main():
     # Créer une instance de la caméra et configurer la résolution
     camera = Picamera2()
     camera.resolution = (640, 480)
-
+    
     # Créer un encodeur et un fichier de sortie pour l'enregistrement vidéo
     encoder = H264Encoder(10000000)  # 10 Mbps
     output = FileOutput("test123.h264")
@@ -21,6 +21,7 @@ def main():
     qpicamera2 = QGlPicamera2(camera, width=800, height=600, keep_ar=False)
     qpicamera2.setWindowTitle("Qt Picamera2 App")
 
+    
     # Démarrer l'enregistrement vidéo
     camera.start_recording(encoder, output)
 
@@ -33,6 +34,8 @@ def main():
 
     # Arrêter l'enregistrement vidéo
     camera.stop_recording()
+    
+    
 
 if __name__ == '__main__':
     main()
