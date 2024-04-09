@@ -6,7 +6,6 @@ import math
 
 plt.close('all')
 
-#Celui qui marche sur la salle
 #Canny
 def detect_edges( image ) :
     #Transform the image into hsv image
@@ -31,50 +30,6 @@ def detect_edges( image ) :
     edges = cv2.Canny(mask, 200, 400)
     # cv2.imwrite( "test50-400.png", edges )
     return edges
-
-#Celui qui marche sur des vraies images de route
-# def detect_edges( image ) :
-#     # Pre-treatment of the image so the lines come out more
-#     gray_img = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-#     blurred_img = cv2.GaussianBlur(gray_img, (5, 5), 0)
-#     exposure_corrected_img = cv2.convertScaleAbs(blurred_img, alpha=1.2, beta=10)
-#     equalized_img = cv2.equalizeHist(exposure_corrected_img)
-#     cv2.imshow("equalized", equalized_img)
-    
-#     kernel_erode = np.ones((3,3), np.uint8)
-#     eroded_mask = cv2.erode(equalized_img, kernel_erode, iterations=1)
-#     kernel_dilate = np.ones((3,3),np.uint8)
-#     dilated_mask = cv2.dilate(eroded_mask, kernel_dilate, iterations=1)
-#     cv2.imshow("mask_200", dilated_mask)
-   
-#     # Detect edges with Canny
-#     edges = cv2.Canny(equalized_img, 200, 400)
-#     # cv2.imwrite( "test50-400.png", edges )
-#     return edges    
-    
-    # # Adaptive threshold
-    # adaptive_threshold = cv2.adaptiveThreshold(equalized_img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 2)
-    
-    # # Appliquer le seuillage de Canny
-    # edges = cv2.Canny(adaptive_threshold, 200, 400)
-    
-    # kernel = np.ones((5,5),np.uint8)
-    # edges = cv2.dilate(edges, kernel, iterations=1)
-    # edges = cv2.erode(edges, kernel, iterations=1)
-    
-    # return edges
-
-# img = cv2.imread('image.jpg', cv2.IMREAD_COLOR)
-# #img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-# #img = cv2.equalizeHist(img)
-# #img = cv2.resize(img, (640, 640))
-# cv2.imshow("og", img)
-# # hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
-# # cv2.imshow("hsv0", hsv[:,:,0])
-# # cv2.imshow("hsv1", hsv[:,:,1])
-# # cv2.imshow("hsv2", hsv[:,:,2])
-# canny = detect_edges(img)
-# cv2.imshow("canny", canny)
 
 def region_of_interest(canny):
     height, width = canny.shape
